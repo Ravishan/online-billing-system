@@ -18,13 +18,16 @@ public class UpdateItemServlet extends HttpServlet {
             double unitPrice = Double.parseDouble(request.getParameter("unit_price"));
 
             try (Connection con = DBConnection.getConnection()) {
-                PreparedStatement ps = con.prepareStatement("UPDATE items SET item_name = ?, unit_price = ? WHERE id = ?");
+                PreparedStatement ps = con.prepareStatement(
+                    "UPDATE items SET item_name = ?, unit_price = ? WHERE id = ?"
+                );
                 ps.setString(1, itemName);
                 ps.setDouble(2, unitPrice);
                 ps.setInt(3, id);
                 ps.executeUpdate();
 
-                response.sendRedirect("itemList.jsp");
+                // ✅ Redirect with success flag
+                response.sendRedirect("itemList.jsp?updated=1");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,3 +35,4 @@ public class UpdateItemServlet extends HttpServlet {
         }
     }
 }
+

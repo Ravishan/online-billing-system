@@ -31,6 +31,11 @@ public class LoginServlet extends HttpServlet {
 
             if (rs.next()) {
                 System.out.println("Login successful: " + username);
+
+                // ✅ Set success message in session
+                HttpSession session = request.getSession();
+                session.setAttribute("loginSuccess", "Successfully logged in.");
+
                 response.sendRedirect("dashboard.jsp");
             } else {
                 System.out.println("Login failed: Invalid credentials");

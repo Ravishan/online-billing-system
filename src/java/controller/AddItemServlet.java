@@ -21,10 +21,13 @@ public class AddItemServlet extends HttpServlet {
             ps.setString(1, itemName);
             ps.setDouble(2, unitPrice);
             ps.executeUpdate();
-            response.sendRedirect("itemList.jsp");
+
+            // Redirect with success message
+            response.sendRedirect("itemList.jsp?success=1");
+
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("Error: " + e.getMessage());
+            response.sendRedirect("addItem.jsp?error=1");
         }
     }
 }

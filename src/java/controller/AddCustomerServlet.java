@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+
 package controller;
 
 import model.DBConnection;
@@ -13,6 +18,7 @@ import javax.servlet.http.*;
 
 @WebServlet("/AddCustomerServlet")
 public class AddCustomerServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String accountNumber = request.getParameter("accountNumber");
         String name = request.getParameter("name");
@@ -29,7 +35,9 @@ public class AddCustomerServlet extends HttpServlet {
             ps.setString(4, telephone);
 
             ps.executeUpdate();
-            response.sendRedirect("customerList.jsp");
+
+            // Redirect to customerList.jsp with success message
+            response.sendRedirect("customerList.jsp?success=1");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("addCustomer.jsp?error=1");

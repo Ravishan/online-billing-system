@@ -21,7 +21,7 @@ public class DeleteItemServlet extends HttpServlet {
                 ps.setInt(1, id);
                 ps.executeUpdate();
 
-                response.sendRedirect("itemList.jsp");
+                response.sendRedirect("itemList.jsp?deleted=1");
             }
         } catch (Exception e) {
             e.printStackTrace();

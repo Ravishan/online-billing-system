@@ -29,6 +29,15 @@
             margin-top: 0;
             text-align: center;
         }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -70,6 +79,27 @@
 
 <div class="container">
     <h1>Item List</h1>
+
+    <%-- ✅ Show success message based on URL parameter --%>
+    <%
+        String success = request.getParameter("success");
+        String updated = request.getParameter("updated");
+        String deleted = request.getParameter("deleted");
+
+        if ("1".equals(success)) {
+    %>
+        <div class="success-message">✅ Item added successfully!</div>
+    <%
+        } else if ("1".equals(updated)) {
+    %>
+        <div class="success-message">✏️ Item updated successfully!</div>
+    <%
+        } else if ("1".equals(deleted)) {
+    %>
+        <div class="success-message">🗑️ Item deleted successfully!</div>
+    <%
+        }
+    %>
 
     <div class="button-group">
         <a href="addItem.jsp">Add New Item</a>

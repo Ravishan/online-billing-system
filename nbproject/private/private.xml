@@ -14,6 +14,19 @@
             <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/CustomerListServlet.java</file>
             <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/addCustomer.jsp</file>
             <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/customerList.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/editCustomer.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/UpdateCustomerServlet.java</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/itemList.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/addItem.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/editItem.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/AddItemServlet.java</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/UpdateItemServlet.java</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/DeleteItemServlet.java</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/addBill.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/BillServlet.java</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/billList.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/billDetails.jsp</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/GenerateBillPDFServlet.java</file>
         </group>
     </open-files>
 </project-private>

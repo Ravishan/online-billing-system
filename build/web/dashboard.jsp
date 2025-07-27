@@ -61,6 +61,18 @@
     </div>
 
     <div class="dashboard-container">
+
+    <%
+        String successMessage = (String) session.getAttribute("loginSuccess");
+        if (successMessage != null) {
+    %>
+        <div style="background: #d4edda; color: #155724; padding: 1rem; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 1.5rem;">
+            <%= successMessage %>
+        </div>
+    <%
+            session.removeAttribute("loginSuccess");
+        }
+    %>
         <div class="card-grid">
             <div class="card">
                 <h2>Customers</h2>

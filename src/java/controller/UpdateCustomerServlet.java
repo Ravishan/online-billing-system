@@ -26,13 +26,15 @@ public class UpdateCustomerServlet extends HttpServlet {
             ps.setString(2, address);
             ps.setString(3, telephone);
             ps.setString(4, accountNumber);
-            ps.executeUpdate();
 
-            response.sendRedirect("customerList.jsp");
+            ps.executeUpdate();
+            response.sendRedirect("customerList.jsp?updated=1");
+
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().print("Error updating customer.");
+            response.sendRedirect("editCustomer.jsp?accountNumber=" + accountNumber + "&error=1");
         }
     }
 }
+
 
