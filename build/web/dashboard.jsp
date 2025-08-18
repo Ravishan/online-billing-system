@@ -15,7 +15,7 @@
             color: white;
             padding: 1rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
         .navbar h1 {
@@ -39,25 +39,61 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
             transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .card:hover {
             transform: translateY(-5px);
         }
-        .card a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
+        .card button {
+    text-decoration: none;
+    color: white;
+    background-color: #444; /* match navbar gray */
+    padding: 10px 18px;
+    border-radius: 6px;
+    display: inline-block;
+    margin: 10px 5px 0;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    width: 150px;
+    cursor: pointer;
+}
+
+.card button:hover {
+    background-color: #222; /* darker on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card img{
+    width: 148px;
+    height: 148px;
+}
+.nav-inner{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1440px;
+    align-items: center;
+    align-self: center;
+}
+    
+
+
     </style>
 </head>
 <body>
     <div class="navbar">
-        <h1>Online Billing System</h1>
+        <div class="nav-inner">
+            <h1>Online Billing System</h1>
         <div>
             <a href="login.jsp" style="color:white; text-decoration: none;">Logout</a>
         </div>
+            
+        </div>
+        
     </div>
 
     <div class="dashboard-container">
@@ -74,20 +110,32 @@
         }
     %>
         <div class="card-grid">
-            <div class="card">
-                <h2>Customers</h2>
-                <a href="addCustomer.jsp">Add Customer</a>
-                <a href="customerList.jsp">Customer List</a>
-            </div>
-            <div class="card">
-                <h2>Items</h2>
-                <a href="addItem.jsp">Add Item</a>
-                <a href="itemList.jsp">Item List</a>
-            </div>
-            <div class="card">
-                <h2>Bills</h2>
-                <a href="addBill.jsp">Add Bill</a>
-                <a href="billList.jsp">Bill List</a>
+           <!-- Customers Card -->
+<!-- Customers Card -->
+<div class="card">
+  <img src="Icons/Customer.png" alt="Customer Icon" class="icon" />
+  <h2>Customers</h2>
+  <a href="addCustomer.jsp"><button>Add Customer</button></a>
+  <a href="customerList.jsp"><button>Customer List</button></a>
+</div>
+
+<!-- Items Card -->
+<div class="card">
+  <img src="Icons/Item.png" alt="Item Icon" class="icon" />
+  <h2>Items</h2>
+  <a href="addItem.jsp"><button>Add Item</button></a>
+  <a href="itemList.jsp"><button>Item List</button></a>
+</div>
+
+<!-- Bills Card -->
+<div class="card">
+  <img src="Icons/Bill.png" alt="Bill Icon" class="icon" />
+  <h2>Bills</h2>
+  <a href="addBill.jsp"><button>Add Bill</button></a>
+  <a href="billList.jsp"><button>Bill List</button></a>
+</div>
+
+
             </div>
         </div>
     </div>

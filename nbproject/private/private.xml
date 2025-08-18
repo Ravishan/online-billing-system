@@ -27,6 +27,8 @@
             <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/billList.jsp</file>
             <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/web/billDetails.jsp</file>
             <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/GenerateBillPDFServlet.java</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/DeleteCustomerServlet.java</file>
+            <file>file:/Users/ravishan99/NetBeansProjects/ravishan2/src/java/controller/DeleteBillServlet.java</file>
         </group>
     </open-files>
 </project-private>

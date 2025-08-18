@@ -112,7 +112,7 @@
 
     <table>
         <tr>
-            <th>Account Number</th>
+            <th>Customer ID</th>
             <th>Name</th>
             <th>Address</th>
             <th>Telephone</th>

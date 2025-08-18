@@ -72,7 +72,7 @@
     <div class="form-container">
         <form action="AddCustomerServlet" method="post">
             <h1>Add Customer</h1>
-            <input type="text" name="accountNumber" placeholder="Account Number" required>
+            <input type="text" name="accountNumber" placeholder="Customer ID" required>
             <input type="text" name="name" placeholder="Name" required>
             <input type="text" name="address" placeholder="Address" required>
             <input type="text" name="telephone" placeholder="Telephone">

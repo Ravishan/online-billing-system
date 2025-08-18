@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <title>Add Bill</title>
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <style>
         body {
             background: #f4f4f4;
@@ -84,8 +88,8 @@
 <div class="container">
     <h1>Add Bill</h1>
     <form action="BillServlet" method="post">
-        <label>Customer:</label>
-        <select name="customer_id">
+        <label for="customerSelect">Customer:</label>
+        <select id="customerSelect" name="customer_id" required>
             <% 
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/online_billing", "root", "");
                 Statement st = con.createStatement();
@@ -116,6 +120,19 @@
         <a href="dashboard.jsp">Back to Dashboard</a>
     </div>
 </div>
+
+<!-- jQuery + Select2 JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#customerSelect').select2({
+            placeholder: "Search for a customer",
+            allowClear: true
+        });
+    });
+</script>
 
 </body>
 </html>
