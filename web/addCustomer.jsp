@@ -90,8 +90,8 @@
         <!-- tell servlet where to go after save -->
         <input type="hidden" name="redirect" value="list"/>
 
-        <label class="label" for="acc">Customer ID *</label>
-        <input id="acc" class="input" type="text" name="accountNumber" placeholder="e.g., CUST-1001" required autofocus>
+        <label class="label" for="acc">Account Number *</label>
+        <input id="acc" class="input" type="text" name="accountNumber" placeholder="e.g., 8237XXX7" required autofocus>
 
         <label class="label" for="name">Name *</label>
         <input id="name" class="input" type="text" name="name" placeholder="Full name" required>

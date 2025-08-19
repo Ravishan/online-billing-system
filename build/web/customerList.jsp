@@ -118,7 +118,7 @@
       <div class="toolbar">
         <form class="search" method="get" action="customerList.jsp">
           <input class="input" type="text" name="q" value="<%= request.getParameter("q") != null ? request.getParameter("q") : "" %>"
-                 placeholder="Search by ID, name, phone or address…"/>
+                 placeholder="Search by AC Num, name, phone or address…"/>
           <button class="btn" type="submit">Search</button>
           <a class="btn" href="customerList.jsp">Clear</a>
         </form>
@@ -128,7 +128,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th style="width:160px">Customer ID</th>
+            <th style="width:160px">Account Number</th>
             <th style="width:220px">Name</th>
             <th>Address</th>
             <th style="width:140px">Telephone</th>
