@@ -5,49 +5,64 @@
 
 package controller;
 
-import java.io.IOException;
-import java.sql.*;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
 import model.DBConnection;
 
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ * Basic login (plain-text password check).
+ * NOTE: For production use BCrypt hashing.
+ */
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        final String username = request.getParameter("username");
+        final String password = request.getParameter("password");
 
-        System.out.println("Username received: " + username);
-        System.out.println("Password received: " + password);
+        System.out.println("Login attempt for user: " + username);
 
-        try (Connection con = DBConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                "SELECT * FROM users WHERE username = ? AND password = ?"
-            );
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(
+                 "SELECT id, username FROM users WHERE username = ? AND password = ?"
+             )) {
+
             ps.setString(1, username);
             ps.setString(2, password);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Create/update session
+                    HttpSession session = request.getSession(true);
+                    session.setAttribute("USER", rs.getString("username"));
+                    session.setAttribute("loginSuccess", "Successfully logged in.");
 
-            if (rs.next()) {
-                System.out.println("Login successful: " + username);
-
-                // ✅ Set success message in session
-                HttpSession session = request.getSession();
-                session.setAttribute("loginSuccess", "Successfully logged in.");
-
-                response.sendRedirect("dashboard.jsp");
-            } else {
-                System.out.println("Login failed: Invalid credentials");
-                response.sendRedirect("login.jsp?error=1");
+                    // Always hit the dashboard servlet so it sets KPI attributes
+                    response.sendRedirect(request.getContextPath() + "/dashboard");
+                    return;
+                }
             }
+
+            // Invalid credentials
+            response.sendRedirect("login.jsp?error=1");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().println("Database error: " + e.getMessage());
+            response.sendRedirect("login.jsp?error=db");
         }
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.sendRedirect("login.jsp");
     }

@@ -1,115 +1,172 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.*"%>
-<%@page import="model.DBConnection"%>
+<%@page import="java.sql.*, model.DBConnection"%>
 <%
     String accountNumber = request.getParameter("accountNumber");
     String name = "";
     String address = "";
     String telephone = "";
+    boolean loaded = false;
+    String loadError = null;
 
-    if (accountNumber != null) {
-        try (Connection con = DBConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM customers WHERE account_number = ?");
+    if (accountNumber != null && !accountNumber.trim().isEmpty()) {
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(
+                 "SELECT name, address, telephone FROM customers WHERE account_number = ?")) {
+
             ps.setString(1, accountNumber);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                name = rs.getString("name");
-                address = rs.getString("address");
-                telephone = rs.getString("telephone");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    name = rs.getString("name");
+                    address = rs.getString("address");
+                    telephone = rs.getString("telephone");
+                    loaded = true;
+                }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            loadError = e.getMessage();
         }
     }
 %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Edit Customer</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <style>
-        body {
-            background: #f4f4f4;
-            font-family: Arial, sans-serif;
-            margin: 0;
-        }
-        .navbar {
-            background: #4b2c2c;
-            padding: 1rem;
-            color: #fff;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        input {
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        button {
-            padding: 12px;
-            background: #4b2c2c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background: #2e1a1a;
-        }
-        .back-button {
-            margin-top: 15px;
-            text-align: center;
-        }
-        .back-button a {
-            background: #777;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .back-button a:hover {
-            background: #555;
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <title>Edit Customer • Pahana Edu Billing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+
+  <style>
+    :root{
+      --brand:#3546a7; --brand-2:#6e87ff; --ink:#101319; --muted:#6b7280;
+      --bg:#f5f7fb; --card:#fff; --border:#e7e9f5; --shadow:0 10px 30px rgba(16,19,25,.08);
+      --radius:14px;
+    }
+    html,body{background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin:0}
+    a{color:inherit; text-decoration:none}
+
+    /* Navbar */
+    .navbar{position:sticky; top:0; z-index:5; background:linear-gradient(90deg,var(--brand),var(--brand-2)); color:#fff; padding:14px 18px; box-shadow:var(--shadow)}
+    .nav-inner{max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand .logo{width:34px; height:34px; border-radius:9px; background:#ffffff1a; display:grid; place-items:center; border:1px solid #ffffff22}
+    .brand span{font-size:18px; letter-spacing:.2px}
+    .nav-spacer{flex:1}
+    .logout{background:#ffffff1e; border:1px solid #ffffff33; color:#fff; padding:8px 14px; border-radius:10px; font-weight:600; transition:.2s}
+    .logout:hover{background:#ffffff33}
+
+    .container{max-width:1200px; margin:24px auto; padding:0 18px; display:flex; flex-direction:column; gap:18px}
+    .hero{background:radial-gradient(1200px 300px at 70% -20%, #c9d2ff55, transparent), linear-gradient(180deg,#ffffff 0%, #f3f6ff 100%); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px}
+    .hero h1{margin:0 0 6px; font-size:24px}
+    .hero p{margin:0; color:var(--muted); font-size:13px}
+
+    .panel{background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); padding:18px; max-width:800px}
+    .panel h3{margin:0 0 8px}
+    .sub{color:var(--muted); font-size:13px; margin:0 0 14px}
+
+    .form{display:grid; gap:12px}
+    .label{font-size:13px; font-weight:600; color:var(--muted)}
+    .input, .select, textarea{
+       padding:12px; border:1px solid var(--border);
+      border-radius:10px; background:#fff; font-size:15px;
+    }
+
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:800px){ .row{grid-template-columns:1fr} }
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 16px; border-radius:10px; font-weight:700; border:1px solid var(--border); background:#fff; transition:.2s; box-shadow:var(--shadow)}
+    .btn.primary{background:var(--brand); color:#fff; border-color:transparent}
+    .btn.secondary{background:#f3f4f6}
+    .btn:hover{transform:translateY(-1px)}
+
+    .alert{background:#fff7ed; color:#92400e; border:1px solid #fed7aa; padding:10px 12px; border-radius:10px; font-size:14px}
+    .ok{background:#eafaf2; color:#124d35; border-color:#cceedd}
+  </style>
 </head>
 <body>
 
-    <div class="navbar">Online Billing System - Edit Customer</div>
+  <!-- NAV -->
+  <div class="navbar">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo">📚</div>
+        <a href="<%= request.getContextPath() %>/dashboard"><span>Pahana Edu • Billing</span></a>
+      </div>
+      <div class="nav-spacer"></div>
+      <a class="logout" href="login.jsp">Logout</a>
+    </div>
+  </div>
 
-    <div class="container">
-        <h1>Edit Customer</h1>
-        <form action="UpdateCustomerServlet" method="post">
-            <input type="hidden" name="accountNumber" value="<%=accountNumber%>">
-            <input type="text" name="name" value="<%=name%>" placeholder="Name" required>
-            <input type="text" name="address" value="<%=address%>" placeholder="Address" required>
-            <input type="text" name="telephone" value="<%=telephone%>" placeholder="Telephone">
-            <button type="submit">Update</button>
-        </form>
+  <div class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Edit Customer</h1>
+      <p>Update name, address or telephone for the selected customer.</p>
+    </section>
 
-        <div class="back-button">
-            <a href="customerList.jsp">Back to Customer List</a>
+    <!-- Error guards -->
+    <%
+      if (accountNumber == null || accountNumber.trim().isEmpty()) {
+    %>
+      <div class="panel alert">No customer selected. Please open this page from the Customer List.</div>
+      <div><a class="btn secondary" href="customerList.jsp">Back to Customer List</a></div>
+    </div>
+  </body>
+</html>
+<%  return; } %>
+
+    <%
+      if (!loaded) {
+    %>
+      <div class="panel alert">Customer "<%= accountNumber %>" was not found.</div>
+      <div><a class="btn secondary" href="customerList.jsp">Back to Customer List</a></div>
+    </div>
+  </body>
+</html>
+<%  return; } %>
+
+    <!-- Edit Form -->
+    <section class="panel">
+      <h3>Customer Details</h3>
+      <p class="sub">Customer ID is fixed and cannot be changed.</p>
+
+      <form class="form" action="UpdateCustomerServlet" method="post">
+        <!-- immutable key -->
+        <input type="hidden" name="accountNumber" value="<%= accountNumber %>"/>
+
+        <label class="label">Customer ID</label>
+        <input class="input" type="text" value="<%= accountNumber %>" readonly/>
+
+        <div class="row">
+          <div>
+            <label class="label" for="name">Name *</label>
+            <input id="name" class="input" type="text" name="name" value="<%= name %>" required>
+          </div>
+          <div>
+            <label class="label" for="tel">Telephone</label>
+            <input id="tel" class="input" type="text" name="telephone"
+                   value="<%= telephone %>" placeholder="07X-XXXXXXX"
+                   pattern="[0-9\\-+ ]{7,15}" title="Enter a valid phone number">
+          </div>
         </div>
+
+        <label class="label" for="addr">Address *</label>
+        <input id="addr" class="input" type="text" name="address" value="<%= address %>" required>
+
+        <div class="actions">
+          <button class="btn primary" type="submit">Update Customer</button>
+          <a class="btn secondary" href="customerList.jsp">Back to Customer List</a>
+        </div>
+      </form>
+    </section>
+
+    <div style="margin:8px 0 0; color:#6b7280; font-size:12px;">
+      Tip: After updating, you’ll return to the Customer List with a success message.
     </div>
 
+    <div style="margin:24px 0; color:#6b7280; font-size:12px; text-align:center">
+      © <script>document.write(new Date().getFullYear())</script> Pahana Edu Bookshop — Online Billing System
+    </div>
+  </div>
 </body>
 </html>
